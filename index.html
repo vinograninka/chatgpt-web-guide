@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Путеводитель NV по веб-версии ChatGPT. Проекты, готовые запросы, помощники и запланированные задачи.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#121a2b">
+  <title>ChatGPT в браузере · Путеводитель NV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Display:ital,wght@0,300;0,400;1,300&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night: #121a2b;
+      --deep: #0a0f1e;
+      --paper: #f4efe6;
+      --card: #fbf8f2;
+      --ink: #121a2b;
+      --muted: #535a6b;
+      --light: #ede7dc;
+      --light-muted: #c9c3b8;
+      --apricot: #e0a47a;
+      --gold: #e9c46a;
+      --line: #d9d1c4;
+      --body: "Onest", system-ui, sans-serif;
+      --serif: "Noto Serif Display", Georgia, serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font: 1rem/1.65 var(--body); }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.12; text-wrap: balance; }
+    h2 { font-size: clamp(2.1rem, 5.8vw, 3.35rem); }
+    h3 { font-size: 1.55rem; }
+    a { color: inherit; text-underline-offset: .22em; }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+    .night :focus-visible { outline-color: var(--gold); }
+    .wrap { width: min(100% - clamp(2rem, 8vw, 6rem), 70rem); margin-inline: auto; }
+    .night { color: var(--light); background: var(--night); }
+    .skip { position: absolute; z-index: 5; top: .75rem; left: 1rem; transform: translateY(-180%); background: var(--card); color: var(--ink); padding: .5rem 1rem; border-radius: 2rem; }
+    .skip:focus { transform: none; }
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem 2.5rem; padding-block: 1.55rem; }
+    .wordmark { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; }
+    .wordmark svg { flex: none; width: 1.45rem; }
+    .wordmark strong { font: 400 1.35rem/1 var(--serif); letter-spacing: .06em; }
+    .wordmark span { color: var(--light-muted); }
+    .label { font: 600 .72rem/1.35 var(--body); letter-spacing: .18em; text-transform: uppercase; }
+    nav { display: flex; flex-wrap: wrap; gap: .3rem 1.15rem; font-size: .88rem; }
+    nav a { color: var(--light-muted); text-decoration: none; padding-block: .37rem; }
+    nav a:hover { color: var(--light); text-decoration: underline; }
+    .hero { position: relative; overflow: hidden; isolation: isolate; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; min-height: 29rem; position: relative; padding-block: 3.75rem 5.5rem; }
+    .hero-copy { position: relative; z-index: 1; }
+    .hero h1 { font-size: clamp(3rem, 7.7vw, 6rem); font-weight: 300; line-height: 1.02; letter-spacing: -.055em; }
+    .hero em { display: block; color: var(--apricot); font-weight: 300; }
+    .hero p { color: var(--light-muted); max-width: 29rem; margin-top: 1.4rem; font-size: clamp(1rem, 2.2vw, 1.2rem); }
+    .links { display: flex; align-items: center; gap: .7rem 1.35rem; flex-wrap: wrap; margin-top: 1.75rem; }
+    .pill { display: inline-flex; align-items: center; padding: .58rem 1.05rem; border-radius: 999px; border: 1px solid transparent; font: 600 .9rem/1.4 var(--body); text-decoration: none; }
+    .primary { background: var(--apricot); color: var(--deep); }
+    .primary:hover { background: #f0bb95; }
+    .secondary { color: var(--light); }
+    .secondary:hover { border-color: #635c61; }
+    .orbit { width: 121%; max-width: 36rem; margin-left: -4%; overflow: visible; }
+    .wave { display: block; width: 100%; height: clamp(1.2rem, 4vw, 3rem); }
+    main section { padding-block: clamp(2.5rem, 6vw, 5rem); }
+    .kicker { color: var(--muted); margin-bottom: .58rem; }
+    .intro { color: var(--muted); max-width: 40rem; margin-top: .68rem; }
+    .steps { list-style: none; margin: 1.65rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .step { background: var(--card); padding: clamp(1.1rem, 2.4vw, 1.65rem); border-radius: 1.2rem; border: 1px solid var(--line); }
+    .number { display: block; margin-bottom: .45rem; color: #97572f; font: italic 300 1.85rem/1 var(--serif); }
+    .step p { margin-top: .65rem; color: var(--muted); }
+    #projects { padding-top: 2.4rem; border-top: 1px solid var(--line); }
+    .project-group { margin-top: 1.65rem; }
+    .project-group > h3 { margin-bottom: .75rem; font: 600 .85rem/1.35 var(--body); color: var(--muted); letter-spacing: .13em; text-transform: uppercase; }
+    .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; align-items: start; }
+    details { min-width: 0; border: 1px solid var(--line); border-radius: 1.05rem; background: var(--card); }
+    summary { padding: .88rem 1.05rem; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) 1.6rem; gap: .6rem; align-items: center; list-style: none; border-radius: 1rem; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; grid-column: 2; grid-row: 1; justify-self: end; color: #775443; font: 400 1.3rem/1 var(--body); }
+    details[open] summary::after { content: "−"; }
+    summary:hover { background: #f5eee3; }
+    .project-name { display: block; font-weight: 600; }
+    .project-purpose { display: block; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+    .prompt { padding: .8rem 1.05rem 1rem; border-top: 1px solid var(--line); }
+    .prompt p { font: 400 .88rem/1.6 var(--mono); }
+    .copy { margin-top: .8rem; min-height: 2.35rem; padding: .4rem .8rem; background: none; color: var(--ink); border: 1px solid #9c8b7e; border-radius: 999px; font: 500 .82rem/1.25 var(--body); cursor: pointer; }
+    .copy:hover { background: #f0e5d6; }
+    .status { margin-left: .6rem; color: var(--muted); font-size: .8rem; }
+    .more { border-top: 1px solid var(--line); }
+    .two-up { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .panel { border-radius: 1.4rem; background: var(--card); padding: clamp(1.15rem, 3vw, 2rem); border: 1px solid var(--line); }
+    .panel h2 { font-size: clamp(1.75rem, 4vw, 2.55rem); }
+    .panel p { color: var(--muted); margin-top: .7rem; }
+    .panel ul { margin: .85rem 0; padding-left: 1.25rem; }
+    .panel li + li { margin-top: .38rem; }
+    .panel a { display: inline-block; margin-top: .8rem; font-weight: 600; }
+    .signoff { padding-block: clamp(2rem, 6vw, 4rem); background: var(--deep); }
+    .signoff-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1.4rem 2.5rem; align-items: end; }
+    .signoff h2 { font-size: clamp(1.7rem, 4vw, 2.6rem); }
+    .signoff p { color: var(--light-muted); max-width: 42rem; margin-top: .75rem; }
+    .signoff .label { color: var(--apricot); }
+    [hidden] { display: none !important; }
+    @media (max-width: 700px) {
+      .top { flex-wrap: wrap; gap: .6rem 1.4rem; }
+      .hero-grid { grid-template-columns: 1fr; min-height: 0; padding-block: 2.45rem 3.2rem; }
+      .orbit { position: absolute; top: .2rem; right: -6rem; width: min(27rem, 88vw); opacity: .37; }
+      .steps, .projects, .two-up, .signoff-grid { grid-template-columns: 1fr; }
+      .steps { gap: .65rem; }
+      .step { display: grid; grid-template-columns: 1.9rem minmax(0, 1fr); }
+      .step p { grid-column: 2; margin-top: .4rem; }
+      .signoff .pill { justify-self: start; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media print {
+      .hero, .signoff { background: white; color: black; }
+      .hero-grid { min-height: auto; display: block; padding-block: 1rem; }
+      .night p, .night em, .night .label { color: black; }
+      .orbit, .wave, .links, nav, .copy, footer .pill, .skip { display: none; }
+      main section { padding-block: 1.25rem; }
+      .step, details, .panel { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body id="top">
+  <a href="#start" class="skip">К инструкции</a>
+  <header class="hero night">
+    <div class="wrap top">
+      <a class="wordmark" href="#top" aria-label="NV · в начало">
+        <svg viewBox="0 0 32 32" fill="#e0a47a" aria-hidden="true"><path d="M16 2c1.4 6.6 4.4 9.6 14 14-9.6 4.4-12.6 7.4-14 14-1.4-6.6-4.4-9.6-14-14 9.6-4.4 12.6-7.4 14-14z"/></svg>
+        <strong>NV</strong><span class="label">Путеводитель</span>
+      </a>
+      <nav aria-label="Разделы путеводителя">
+        <a href="#start">Первые шаги</a>
+        <a href="#projects">Проекты</a>
+        <a href="#helpers">Помощники</a>
+      </nav>
+    </div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>ChatGPT <em>в браузере</em></h1>
+        <p>Я настроила для вас проекты и помощников. Откройте ChatGPT в своём аккаунте и начните с одной задачи, которая сейчас под рукой.</p>
+        <div class="links">
+          <a href="https://chatgpt.com/" class="pill primary" target="_blank" rel="noopener noreferrer">Открыть ChatGPT</a>
+          <a href="#projects" class="pill secondary">Выбрать проект</a>
+        </div>
+      </div>
+      <svg class="orbit" viewBox="0 0 520 410" fill="none" aria-hidden="true">
+        <circle cx="274" cy="201" r="136" stroke="#626174" stroke-opacity=".44"/>
+        <circle cx="274" cy="201" r="102" stroke="#807687" stroke-opacity=".38"/>
+        <ellipse cx="274" cy="201" rx="219" ry="77" transform="rotate(-26 274 201)" stroke="#a18d8e" stroke-opacity=".62"/>
+        <ellipse cx="274" cy="201" rx="201" ry="60" transform="rotate(28 274 201)" stroke="#7b7797" stroke-opacity=".46"/>
+        <circle cx="274" cy="201" r="54" fill="#1b2540" stroke="#756879" stroke-opacity=".75"/>
+        <path fill="#e9c46a" d="M274 156c5 22 14 34 46 45-32 12-41 22-46 45-5-23-14-33-46-45 32-11 41-23 46-45z"/>
+        <circle cx="170" cy="116" r="5" fill="#afa2f0"/>
+        <circle cx="358" cy="308" r="6" fill="#8fcba8"/>
+        <circle cx="435" cy="131" r="9" fill="#e0a47a"/>
+        <circle cx="104" cy="264" r="4" fill="#e9c46a"/>
+        <g fill="#d9cbbd">
+          <circle cx="62" cy="119" r="1.5"/><circle cx="83" cy="61" r="1"/><circle cx="395" cy="53" r="1.4"/>
+          <circle cx="470" cy="193" r="1.2"/><circle cx="123" cy="331" r="1"/><circle cx="322" cy="39" r="1.2"/>
+          <circle cx="453" cy="298" r="1.6"/><circle cx="224" cy="347" r="1.2"/><circle cx="407" cy="353" r="1"/>
+        </g>
+        <path d="M110 167v14m-7-7h14M384 100v10m-5-5h10M473 240v12m-6-6h12M194 308v12m-6-6h12" stroke="#e0a47a" stroke-opacity=".72"/>
+      </svg>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#f4efe6" d="M0 35C320 75 590 0 904 16c238 13 376 51 536 25v19H0Z"/>
+    </svg>
+  </header>
+
+  <main class="wrap">
+    <section id="start" aria-labelledby="start-title">
+      <p class="label kicker">Первые шаги</p>
+      <h2 id="start-title">Как начать работу</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="number" aria-hidden="true">01</span>
+          <h3>Откройте проект</h3>
+          <p>В левой панели найдите <strong>«Проекты»</strong> и выберите тему. Если панель скрыта, раскройте её кнопкой в левом верхнем углу.</p>
+        </li>
+        <li class="step">
+          <span class="number" aria-hidden="true">02</span>
+          <h3>Напишите задачу</h3>
+          <p>Откройте новый чат внутри проекта. Скажите, что нужно получить. Чтобы приложить таблицу или фото, нажмите <strong>«+»</strong> рядом с полем сообщения.</p>
+        </li>
+        <li class="step">
+          <span class="number" aria-hidden="true">03</span>
+          <h3>Уточните ответ</h3>
+          <p>Продолжайте в том же чате. Например, «Сократи до трёх пунктов» или «Покажи, откуда взялась эта цифра».</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Какой проект выбрать</h2>
+      <p class="intro">Раскройте нужную карточку и скопируйте запрос. Его можно отправить как есть или добавить свои вводные.</p>
+
+      <div class="project-group">
+        <h3>Для магазина</h3>
+        <div class="projects">
+          <details open>
+            <summary><span><span class="project-name">Учёт и аналитика</span><span class="project-purpose">Продажи, прибыль, списания и сверка таблиц</span></span></summary>
+            <div class="prompt"><p>Посмотри приложенную выгрузку за неделю. Покажи прибыль по товарам и каналам, если хватает данных. Отдельно перечисли расхождения и недостающие столбцы. Исходный файл оставь как есть.</p></div>
+          </details>
+          <details>
+            <summary><span><span class="project-name">Команда и сервис</span><span class="project-purpose">Скрипты для клиентов и решения на смене</span></span></summary>
+            <div class="prompt"><p>Нужного цветка нет в наличии. Предложи, что менеджер может решить сам, когда согласовать замену со мной и что написать клиенту. Подготовь черновик.</p></div>
+          </details>
+          <details>
+            <summary><span><span class="project-name">Стратегия</span><span class="project-purpose">Приоритеты, развитие и делегирование</span></span></summary>
+            <div class="prompt"><p>Помоги выбрать одну операционную задачу, которую я могу передать команде в этом месяце. Предложи, кому её передать и как проверить результат через две недели.</p></div>
+          </details>
+          <details>
+            <summary><span><span class="project-name">Контент</span><span class="project-purpose">Рубрики, публикации и тексты</span></span></summary>
+            <div class="prompt"><p>Предложи контент-план на неделю для цветочного магазина. Для каждой идеи укажи формат, цель и какой материал нужно снять. Цены и наличие уточни у меня.</p></div>
+          </details>
+          <details>
+            <summary><span><span class="project-name">Фото и видео</span><span class="project-purpose">План съёмки, кадры и проверка материалов</span></span></summary>
+            <div class="prompt"><p>У нас 45 минут на съёмку трёх букетов. Составь план по минутам и список кадров для клиента и соцсетей. Отметь, что снять в первую очередь.</p></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="project-group">
+        <h3>Для себя и семьи</h3>
+        <div class="projects">
+          <details>
+            <summary><span><span class="project-name">Дела и расписание</span><span class="project-purpose">Рабочие и личные дела в одном плане</span></span></summary>
+            <div class="prompt"><p>Я пришлю список дел и встреч. Помоги выделить три приоритета на завтра, учесть дорогу и оставить запас. Скажи, что можно перенести.</p></div>
+          </details>
+          <details>
+            <summary><span><span class="project-name">Семья</span><span class="project-purpose">Договорённости, быт и семейная логистика</span></span></summary>
+            <div class="prompt"><p>Помоги собрать семейную неделю из моих заметок. Покажи, кто за что отвечает, где пересекаются события и какие вопросы надо обсудить дома.</p></div>
+          </details>
+          <details>
+            <summary><span><span class="project-name">Рефлексия и решения</span><span class="project-purpose">Разобрать ситуацию и понять, как действовать</span></span></summary>
+            <div class="prompt"><p>Помоги мне разобраться в ситуации. Задавай по одному вопросу. Когда станет яснее, предложи один небольшой шаг, который я могу попробовать.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="more two-up" id="helpers" aria-label="Помощники и обзор недели">
+      <article class="panel">
+        <h2>Помощники</h2>
+        <p>В левой панели откройте <strong>«Плагины» → «Навыки»</strong>. Там уже сохранены три помощника.</p>
+        <ul>
+          <li><strong>Ревизор маржи</strong> разбирает выгрузки и ищет расхождения.</li>
+          <li><strong>Дежурный управляющий</strong> помогает с нестандартным заказом и черновиком ответа.</li>
+          <li><strong>Режиссёр смены</strong> собирает тайминг и список кадров.</li>
+        </ul>
+        <p>Откройте рабочий проект, выберите режим <strong>«Работа»</strong> и попросите применить нужный навык. Запросы из карточек можно отправлять и в обычном режиме <strong>«Чат»</strong>.</p>
+        <a href="https://chatgpt.com/skills" target="_blank" rel="noopener noreferrer">Открыть навыки</a>
+      </article>
+      <article class="panel">
+        <h2>Обзор недели</h2>
+        <p>В разделе <strong>«Запланировано»</strong> найдите <strong>«Обзор недели»</strong>. Там можно посмотреть время следующего запуска, изменить расписание или поставить задачу на паузу.</p>
+        <p>Обзор напомнит сверить цифры, выбрать одно дело для команды и запланировать съёмку. Для разбора продаж приложите актуальную выгрузку в проект <strong>«Учёт и аналитика»</strong>.</p>
+        <p>Если проекты или обзор пропали из меню, проверьте, что внизу слева открыт ваш обычный аккаунт.</p>
+        <a href="https://chatgpt.com/scheduled" target="_blank" rel="noopener noreferrer">Открыть расписание</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="signoff night">
+    <div class="wrap signoff-grid">
+      <div>
+        <h2>Начните с ближайшего дела</h2>
+        <p>Откройте подходящий проект и отправьте один запрос. Перед отправкой клиенту проверьте цены, наличие и обещанные сроки. Для разбора таблиц обычно достаточно копии без контактов клиентов.</p>
+        <p class="label">Нина · NV</p>
+      </div>
+      <a href="https://chatgpt.com/" class="pill primary" target="_blank" rel="noopener noreferrer">Открыть ChatGPT</a>
+    </div>
+  </footer>
+  <script>
+    const copyLabel = 'Скопировать запрос';
+    const canCopy = typeof navigator.clipboard?.writeText === 'function';
+
+    if (canCopy) {
+      for (const prompt of document.querySelectorAll('.prompt')) {
+        const text = prompt.querySelector('p');
+        const button = document.createElement('button');
+        const status = document.createElement('span');
+
+        button.type = 'button';
+        button.className = 'copy';
+        button.textContent = copyLabel;
+        status.className = 'status';
+        status.setAttribute('role', 'status');
+        prompt.append(button, status);
+
+        button.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(text.textContent.trim());
+            status.textContent = 'Скопировано';
+          } catch {
+            const selection = window.getSelection();
+            if (selection) {
+              const range = document.createRange();
+              range.selectNodeContents(text);
+              selection.removeAllRanges();
+              selection.addRange(range);
+            }
+            status.textContent = 'Скопируйте текст вручную';
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
